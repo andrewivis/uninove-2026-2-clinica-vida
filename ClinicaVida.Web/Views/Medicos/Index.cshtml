@@ -1,0 +1,59 @@
+
+@using System.Collections.Generic
+@using ClinicaVida.Web.Models
+@model IEnumerable<Medico>
+
+@{
+    ViewData["Title"] = "Médicos";
+
+    var especialidades =
+        ViewBag.Especialidades as List<Especialidade>
+        ?? new List<Especialidade>();
+}
+
+<h1>Corpo Clínico</h1>
+
+<p>Consulte nossos médicos por especialidade.</p>
+
+<form method="get" action="/Medicos">
+    <div class="mb-3">
+        <label for="especialidadeId" class="form-label">
+            Especialidade
+        </label>
+
+        <select id="especialidadeId"
+                name="especialidadeId"
+                class="form-select">
+
+            <option value="">Todas as especialidades</option>
+
+            @foreach (var especialidade in especialidades)
+            {
+                <option value="@especialidade.Id">
+                    @especialidade.Nome
+                </option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Filtrar
+    </button>
+</form>
+
+<hr />
+
+<h2>Médicos cadastrados</h2>
+
+<ul>
+    @foreach (var medico in Model)
+    {
+        <li>
+            <a href="/Medicos/Details/@medico.Id">
+                @medico.Nome
+            </a>
+            — CRM @medico.Crm
+            — @medico.Especialidade?.Nome
+        </li>
+    }
+</ul>
